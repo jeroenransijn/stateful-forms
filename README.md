@@ -66,7 +66,7 @@ Not yet written...
 ## Expressions
 
 Similar to AngularJS you put expressions inside of your directives.
-Note that `==`, `or` and `and` are used top map AngularJS `==`, `&&`.
+Note that `==`, `or` and `and` are used to map AngularJS `==`, `&&`.
 Expressions are not as powerful in stateful forms as in AngularJS.
 
 There are 3 different kind of expressions with some basic examples:
