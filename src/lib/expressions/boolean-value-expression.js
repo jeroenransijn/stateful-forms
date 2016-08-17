@@ -29,8 +29,8 @@ var Proto = BooleanValueExpression.prototype;
 
 Proto.isMatched = function (state) {
 	if (state.hasOwnProperty(this.name)) {
-		console.log(state[this.name].value === this.value);
-		if (state[this.name].value === this.value) return !this.inverted;
+		console.log(state[this.name][this.prop] === this.value);
+		if (state[this.name][this.prop] === this.value) return !this.inverted;
 	}
 
 	return this.inverted;

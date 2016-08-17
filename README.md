@@ -85,7 +85,8 @@ They are used directly in `sf-show`, which toggles an element.
 ```html
 <p sf-show="<CompoundBooleanExpression>"></p>
 <p sf-show="name.invalid">Show when name is invalid</p>
-<p sf-show="inquiry.value is question">Show when inquiry is question</p>
+<p sf-show="inquiry.value == question">Show when inquiry is question</p>
+<p sf-show="inquiry.value != question">Show when inquiry is not question</p>
 <p sf-show="form.submitted and name.invalid"></p>
 ```
 
@@ -120,7 +121,8 @@ They are used directly in `sf-show`, which toggles an element.
 	| <BooleanValueExpression> and <CompoundBooleanExpression>
 	| <CompoundBooleanExpression> or <CompoundBooleanExpression>
 
-<BooleanValueExpression> = <name>.value is <value>
+<BooleanValueExpression> = <name>.value == <value>
+	| <name>.value != <value>
 
 <BooleanExpression> = <name>.<property>
 
@@ -131,13 +133,8 @@ They are used directly in `sf-show`, which toggles an element.
 <value> = string
 ```
 
-It is important to note that you can only use `is`
+It is important to note that you should only use `==` and `!=`
 if you are accessing the `value` on a form element.
-
-```html
-<!-- This will throw an error -->
-<p sf-show="name.valid is false"></p>
-```
 
 ### `ValueExpression`
 
