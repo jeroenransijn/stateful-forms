@@ -1,0 +1,25 @@
+{
+  "name": "stateful-forms",
+  "version": "0.0.1",
+  "description": "Tiny library with 0 dependencies to deal with forms",
+  "main": "/dist/stateful-forms.js",
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "chai": "^3.5.0",
+    "concurrently": "^2.2.0",
+    "express": "^4.14.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
+    "mocha": "^3.0.2",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run watch\" \"npm run examples\" ",
+    "watch": "gulp watch",
+    "examples": "node serve-examples.js",
+    "test": "mocha --reporter spec"
+  },
+  "author": "Jeroen Ransijn <jssrdesign@gmail.com> (http://jeroenransijn.nl/)",
+  "license": "ISC"
+}
