@@ -1,10 +1,8 @@
 # Stateful Forms
 > Small library to deal with forms. Inspired by AngularJS + React. 0 dependencies.
 
-**This project is in active development. Not stable to use yet.**
-
 ```html
-<form stateful novalidate action="/endpoint" method="post">
+<form stateful novalidate action="/endpoint" method="post" ectype="application/json">
 
   <fieldset sf-show="!($request.success && $response.json.success)">
 
