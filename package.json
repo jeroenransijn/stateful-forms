@@ -1,6 +1,6 @@
 {
   "name": "stateful-forms",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Tiny library with 0 dependencies to deal with forms",
   "main": "/dist/stateful-forms.js",
   "devDependencies": {
