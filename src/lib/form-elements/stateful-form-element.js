@@ -1,10 +1,13 @@
 var StatefulObject = require('../stateful-object');
+var reflectState = require('../utils').reflectState;
 
 function StatefulFormElement (el) {
   this.el = el;
   this.name = this.el.getAttribute('name');
   StatefulObject.call(this);
+  this.onStateChange(reflectState.bind(null, this.el));
   this.bindEvents();
+  this.triggerStateChange();
 }
 
 var Proto = StatefulFormElement.prototype = Object.create(StatefulObject.prototype);

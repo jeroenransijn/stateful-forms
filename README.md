@@ -99,7 +99,7 @@ It then exposes that state object to elements inside of your form we call `direc
 Inside of your `directive` you put `expressions`.
 In the previous example that was: `form.submitted && name.invalid`.
 
-Whenever you change something in the form the a state update is triggered.
+Whenever you change something in the form a state update is triggered.
 It checks if there are any directives listening to this state.
 If there are, it updates those directives with that state.
 

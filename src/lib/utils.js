@@ -32,8 +32,19 @@ function toggleAttribute (el, attrName, isApplied) {
   }
 }
 
+function reflectState (el, state) {
+  Object.keys(state).forEach(function (key) {
+    if (typeof state[key] === 'boolean') {
+      toggleClass(el, 'is-' + key, !!state[key]);
+    } else if (key === 'value') {
+      toggleClass(el, 'has-value', !!state[key]);
+    }
+  });
+}
+
 module.exports = {
   toggleClass: toggleClass,
+  reflectState: reflectState,
   removeClass: removeClass,
   addClass: addClass,
   toggleAttribute: toggleAttribute

@@ -181,13 +181,18 @@ Proto.submit = function () {
 // Private
 
 function createStatefulFormElement (field) {
-  var type = field.getAttribute('sf-element') || field.type || field.nodeName.toLowerCase();
+  var type = field.getAttribute('sf-element')
+          || field.type
+          || field.nodeName.toLowerCase();
 
   switch (type) {
-    case 'textarea': return new StatefulTextInput(field);
-    case 'password': return new StatefulTextInput(field);
-    case 'text': return new StatefulTextInput(field);
-    case 'email': return new StatefulTextInput(field);
+    case 'textarea':
+    case 'password':
+    case 'text':
+    case 'email':
+    case 'phone':
+    case 'tel':
+      return new StatefulTextInput(field);
     case 'checkbox': return new StatefulCheckbox(field);
     case 'radio': return new StatefulRadio(field);
     case 'select-one':
