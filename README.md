@@ -419,11 +419,15 @@ The `$request` object is always available
     pending: false,
     success: true,
     failed: false,
+    error: false,
     status: request.status
   }
   // ... state omitted
 }
 ```
+
+You probably want to use `$request.error || $request.failed` in most cases.
+Technically they are slightly different.
 
 ## The `$response` object in the state object
 
@@ -440,11 +444,14 @@ The `$response` object is only available when the form is submitted.
 }
 ```
 
-You can use the `response` object to show messages from the server.
+`JSON.parse` is run with a try/catch block.
+It will never through an error if you decide not to return `json` from the server.
+
+You can use the `$response` object to show messages from the server.
 If you decide to implement something like that.
 
 ```html
-<p sf-text="response.json.message"></p>
+<p sf-text="$response.json.message"></p>
 ```
 
 ## Examples
