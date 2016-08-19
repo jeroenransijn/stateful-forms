@@ -7,7 +7,7 @@
 <form stateful novalidate action="/endpoint" method="post">
 
   <input type="text" name="name" required>
-  <p sf-show="form.submitted and name.invalid">
+  <p sf-show="form.submitted && name.invalid">
     Please enter a correct name
   </p>
 
