@@ -592,7 +592,7 @@ team. Especially on the [angular/expressionist.js](https://github.com/angular/ex
 - [x] Build support for `input[type="hidden"]`
 - [x] Figure out what to do with `input[type="date"]`
 - [x] Rename form, response and request to $form, $response, $request
-- [ ] Create a solid build step with minification
+- [x] Create a solid build step with minification
 - [ ] Publish to `npm`
 - [ ] Publish to `bower`
 - [ ] Publish to `cdnjs`
