@@ -2,9 +2,12 @@ var StatefulObject = require('./stateful-object');
 var StatefulTextInput = require('./form-elements/stateful-text-input');
 var StatefulSelect = require('./form-elements/stateful-select');
 var StatefulCheckbox = require('./form-elements/stateful-checkbox');
+var StatefulRadio = require('./form-elements/stateful-radio');
+var StatefulRadioGroup = require('./form-elements/stateful-radio-group');
 
 function StatefulForm (el) {
   this.el = el;
+  this.handleFormElementStateChange = this.handleFormElementStateChange.bind(this)
   this.init();
   StatefulObject.call(this);
   this.bindEvents();
@@ -64,6 +67,7 @@ Proto.computedState = function (state) {
 
 Proto.init = function () {
   this.formElements = [];
+  this.radioGroups = {};
 
   Array.prototype.forEach.call(this.el.elements, function (field) {
     var name = field.name;
@@ -77,9 +81,22 @@ Proto.init = function () {
     if (type == 'file') return;
 
     var formElement = createStatefulFormElement(field);
-    if (formElement !== undefined) {
+
+    if (formElement instanceof StatefulRadio) {
+      if (this.radioGroups.hasOwnProperty(name)) {
+        this.radioGroups[name].addRadio(formElement);
+      } else {
+        this.radioGroups[name] = new StatefulRadioGroup(name);
+        this.radioGroups[name].addRadio(formElement);
+      }
+    } else if (formElement !== undefined) {
       this.formElements.push(formElement);
     }
+  }.bind(this));
+
+  Object.keys(this.radioGroups).forEach(function (name) {
+    this.radioGroups[name].triggerRadiosStateChange();
+    this.formElements.push(this.radioGroups[name]);
   }.bind(this));
 };
 
@@ -88,7 +105,7 @@ Proto.getDefaultState = function () {
   var isValid = true;
 
   Array.prototype.forEach.call(this.formElements, function (formElement) {
-    formElement.onStateChange(this.handleFormElementStateChange.bind(this));
+    formElement.onStateChange(this.handleFormElementStateChange);
     state[formElement.name] = formElement.state;
     isValid = formElement.state.valid && isValid;
   }.bind(this));
@@ -113,8 +130,6 @@ Proto.submit = function () {
   var action = this.el.getAttribute('action');
   this.setFormState({ submitted: true });
 
-
-  console.log(this.state);
   if (this.state.form.invalid) return;
 
   var request = new XMLHttpRequest();
@@ -163,19 +178,23 @@ Proto.submit = function () {
   request.send(this.state);
 };
 
-
 // Private
 
 function createStatefulFormElement (field) {
-  switch (field.type) {
+  var type = field.getAttribute('sf-element') || field.type || field.nodeName.toLowerCase();
+
+  switch (type) {
     case 'textarea': return new StatefulTextInput(field);
+    case 'password': return new StatefulTextInput(field);
     case 'text': return new StatefulTextInput(field);
     case 'email': return new StatefulTextInput(field);
     case 'checkbox': return new StatefulCheckbox(field);
+    case 'radio': return new StatefulRadio(field);
+    case 'select-one':
+    case 'select':
+      return new StatefulSelect(field);
     default:
-      if (field.nodeName.toLowerCase() === 'select') {
-        return new StatefulSelect(field);
-      }
+      console.error('Form element type `' + type + '` not supported by Stateful Forms', field);
   }
 }
 
