@@ -1474,6 +1474,12 @@ Proto.submit = function () {
 
   if (this.state.$form.invalid) return;
 
+  this.setState({
+    $request: Object.assign({}, this.state.$request, {
+      pending: true
+    })
+  });
+
   var request = new XMLHttpRequest();
   request.open('POST', action, true);
   request.setRequestHeader('Content-Type', enctype);
@@ -1491,6 +1497,7 @@ Proto.submit = function () {
       this.setState({
         $request: {
           success: true,
+          pending: false,
           failed: false,
           error: false,
           status: request.status
@@ -1503,20 +1510,20 @@ Proto.submit = function () {
     } else {
       this.setState({
         $request: {
+          pending: false,
           success: false,
           failed: true,
           error: false,
           status: request.status
         }
       });
-      // We reached our target server, but it returned an error
-      console.log('error');
     }
   }.bind(this);
 
   request.onerror = function () {
     this.setState({
       $request: {
+        pending: false,
         success: false,
         failed: false,
         error: true,

@@ -23,8 +23,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
-    "git:merge-down-dev": "npm run build && git push origin dev && git checkout master && git merge dev && git push origin master",
-    "build": "gulp build && gulp build-min",
+    "git:merge-down-dev": "git push origin dev && git checkout master && git merge dev && git push origin master",
+    "build": "gulp build && gulp build-min && git add . && git commit -m 'build'",
     "dev": "concurrently \"npm run watch\" \"npm run examples\" ",
     "watch": "gulp build && gulp watch",
     "examples": "node serve-examples.js",
