@@ -75,7 +75,32 @@
 
 ## Installation
 
-Not yet written...
+## JSDelivr CDN
+
+```html
+<script src="https://cdn.jsdelivr.net/state-machine/2.2.0/stateful-forms.min.js"></script>
+```
+
+### Manual Install
+
+Download `/dist/stateful-forms.min.js`.
+
+```html
+<!-- In your project -->
+<script src="/js/stateful-forms.min.js"></script>
+```
+
+### Install with `npm`
+
+```
+npm install stateful-forms --save
+```
+
+```html
+<!-- In your project with npm -->
+<script src="/node_modules/stateful-forms/dist/stateful-forms.min.js"></script>
+```
+
 
 ## How does it work?
 
@@ -593,7 +618,7 @@ team. Especially on the [angular/expressionist.js](https://github.com/angular/ex
 - [x] Figure out what to do with `input[type="date"]`
 - [x] Rename form, response and request to $form, $response, $request
 - [x] Create a solid build step with minification
-- [ ] Publish to `npm`
+- [x] Publish to `npm`
 - [ ] Publish to `bower`
 - [ ] Publish to `cdnjs`
 - [ ] Write installation guide
