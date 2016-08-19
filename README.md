@@ -264,13 +264,39 @@ The following list shows all the supported form elements.
 *You can ignore the right hand side of the arrow.*
 
 * `input[type="text"]` => `StatefulTextInput`
-* `input[type="phone"]` => `StatefulTextInput`
-* `input[type="email"]` => `StatefulTextInput`
+* `input[type="phone|tel"]` => `StatefulTextInput`, *doesn’t validate*
+* `input[type="email"]` => `StatefulTextInput`, *validates email*
 * `textarea` => `StatefulTextInput`
 * `input[type="checkbox"]` => `StatefulCheckbox`
+* `input[type="radio"]` => `StatefulRadio` grouped by `StatefulRadioGroup`
 * `select` => `StatefulSelect`
 
 * No `type="file"` support
+* No `type="date"` support`
+
+### Why doesn’t `input[type="phone"]` validate?
+
+Since there are so many different types of phone numbers.
+It’s impossible to have a one size fits all.
+
+The best way to include phone validation is through a regular expression
+on the `pattern` attribute.
+
+The following StackOverflow post might give you more insight:
+[A comprehensive regex for phone number validation](http://stackoverflow.com/questions/123559/a-comprehensive-regex-for-phone-number-validation)
+
+### Why no `type="date"` or datepicker support?
+
+The date type is horribly supported among browser with inconsistent UI
+and API’s. If you want to use a custom datepicker you are better of
+reflecting the value to a hidden input field.
+
+### Proxy a form element into an other type
+
+**Advanced usage, you better now what you are doing.**
+You can potentially use the `sf-element` attribute to set what type
+a form element should use. This might be useful for unsupported
+form elements. Usage: `sf-element="text"` for example.
 
 ### Form elements states
 
@@ -538,9 +564,12 @@ team. Especially on the [angular/expressionist.js](https://github.com/angular/ex
 
 ## TODO
 
-[ ] Build support for `input[type="radio"]`
+[x] Build support for `input[type="radio"]`
 [ ] Reflect classnames to form elements
 [ ] Test out successful responses
+[ ] Build support for `input[type="hidden"]`
+[ ] Figure out what to do with `input[type="date"]`
+[ ] Rename form, response and request to $form, $response, $request
 [ ] Create a solid build step with minification
 [ ] Publish to `npm`
 [ ] Publish to `bower`
