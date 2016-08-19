@@ -78,7 +78,7 @@
 ## JSDelivr CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/stateful-forms/0.4.1/stateful-forms.min.js"></script>
+<script src="https://cdn.jsdelivr.net/stateful-forms/0.4.2/stateful-forms.min.js"></script>
 ```
 
 ### Manual Install
