@@ -6,12 +6,35 @@
 ```html
 <form stateful novalidate action="/endpoint" method="post">
 
-  <input type="text" name="name" required>
-  <p sf-show="form.submitted && name.invalid">
-    Please enter a correct name
-  </p>
+  <fieldset sf-show="!($request.success && $response.json.success)">
 
-  <button type="submit" name="button">Submit</button>
+    <div sf-class="has-error: $form.submitted && name.invalid">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" required>
+      <p sf-show="$form.submitted && name.invalid" style="display: none;">
+        Please fill in a name
+      </p>
+    </div>
+
+    <p sf-text="$response.json.errorMessage">
+      <!-- Support for server side responses -->
+    </p>
+
+    <p sf-show="$request.failed || $request.error" style="display: none;">
+      Oops, something went wrong on with the request. Try again later.
+    </p>
+
+    <button type="submit" name="button">Submit</button>
+
+  </fieldset>
+
+  <fieldset sf-show="$request.success && $response.json.success" style="display: none;">
+
+    <h2>Form successfully submitted</h2>
+
+    <p sf-text="$response.json.message"></p>
+
+  </fieldset>
 
 </form>
 
@@ -93,7 +116,7 @@ It then exposes that state object to elements inside of your form we call `direc
 `sf-show` in this example is such a directive:
 
 ```html
-<p sf-show="form.submitted && name.invalid">Please fill in a name.</p>
+<p sf-show="$form.submitted && name.invalid">Please fill in a name.</p>
 ```
 
 Inside of your `directive` you put `expressions`.
@@ -140,7 +163,7 @@ See documentation and examples below.
 <p sf-show="name.invalid">Show when name is invalid</p>
 <p sf-show="inquiry.value == 'question'">Show when inquiry is question</p>
 <p sf-show="inquiry.value != 'question'">Show when inquiry is not question</p>
-<p sf-show="form.submitted && name.invalid"></p>
+<p sf-show="$form.submitted && name.invalid"></p>
 <p sf-show="request.failure || response.json.invalid"></p>
 ```
 
@@ -346,30 +369,30 @@ Stateful Forms only fully work when you:
 
 **Only inside of that form do directives work.**
 
-### The `form` object in the state object
+### The `$form` object in the state object
 
-`form` is always available and refers to the form itself.
+`$form` is always available and refers to the form itself.
 It has the same properties as a form element with a couple extra properties.
 
 ```
-form.submitted = has the submit button been clicked
+$form.submitted = has the submit button been clicked
 
-form.pristine = have any of the form elements inside been interacted with
-form.dirty = !pristine
-form.valid = are all form elements valid
-form.invalid = !valid
-form.touched = did any form element blur
-form.untouched = !touched
+$form.pristine = have any of the form elements inside been interacted with
+$form.dirty = !pristine
+$form.valid = are all form elements valid
+$form.invalid = !valid
+$form.touched = did any form element blur
+$form.untouched = !touched
 ```
 
-## The `request` object in the state object
+## The `$request` object in the state object
 
-The `request` object is always available
+The `$request` object is always available
 
 ```javascript
 //  state object
 {
-  request: {
+  $request: {
     pending: false,
     success: true,
     failed: false,
@@ -379,14 +402,14 @@ The `request` object is always available
 }
 ```
 
-## The `response` object in the state object
+## The `$response` object in the state object
 
-The `response` object is only available when the form is submitted.
+The `$response` object is only available when the form is submitted.
 
 ```javascript
 //  state object
 {
-  response: {
+  $response: {
     json: JSON.parse(request.responseText),
     text: request.responseText
   }
@@ -415,7 +438,7 @@ If you clone this repo you can run them by running `npm run dev`.
   <input type="text" name="name" required>
 
   <!-- Note the value of the sf-show attribute -->
-  <p sf-show="form.submitted && name.invalid">
+  <p sf-show="$form.submitted && name.invalid">
     Please enter a correct name
   </p>
 
@@ -436,7 +459,7 @@ If you clone this repo you can run them by running `npm run dev`.
 <form stateful novalidate action="/endpoint" method="post">
 
   <input type="email" name="email" value="" required>
-  <p sf-show="form.submitted && name.invalid">
+  <p sf-show="$form.submitted && name.invalid">
     Please enter a correct name
   </p>
 
@@ -453,11 +476,11 @@ when the form is submitted:
 <form stateful novalidate action="/endpoint" method="post">
 
   <div class="form-item">
-    <label for="create_account_email">Email <span sf-show="form.submitted && email.invalid" class="req">*</span></label>
+    <label for="create_account_email">Email <span sf-show="$form.submitted && email.invalid" class="req">*</span></label>
 
     <input type="email" name="email" id="create_account_email" required>
 
-    <p class="desc" sf-show="form.submitted && email.invalid" style="display: none;">
+    <p class="desc" sf-show="$form.submitted && email.invalid" style="display: none;">
       Please enter a valid email
     </p>
   </div>
@@ -473,9 +496,9 @@ when the form is submitted:
 ```html
 <form stateful novalidate action="/endpoint" method="post">
 
-  <div class="form-item" sf-class="has-error: form.submitted && email.invalid">
+  <div class="form-item" sf-class="has-error: $form.submitted && email.invalid">
     <input type="email" name="email" value="" required>
-    <p sf-show="form.submitted && name.invalid">
+    <p sf-show="$form.submitted && name.invalid">
       Please enter a correct name
     </p>
   </div>
@@ -512,11 +535,11 @@ when the form is submitted:
 ```html
 <!-- form and script omitted -->
 <div class="form-item">
-  <label for="create_account_email">Email <span sf-show="form.submitted && email.invalid" class="req">*</span></label>
+  <label for="create_account_email">Email <span sf-show="$form.submitted && email.invalid" class="req">*</span></label>
 
   <input type="email" name="email" id="create_account_email" required>
 
-  <p class="desc" sf-show="form.submitted && email.invalid" style="display: none;">
+  <p class="desc" sf-show="$form.submitted && email.invalid" style="display: none;">
     Please enter a valid email
   </p>
 </div>
@@ -567,10 +590,10 @@ team. Especially on the [angular/expressionist.js](https://github.com/angular/ex
 
 - [x] Build support for `input[type="radio"]`
 - [x] Reflect classnames to form elements
-- [ ] Test out successful responses
+- [x] Test out successful responses
 - [x] Build support for `input[type="hidden"]`
 - [x] Figure out what to do with `input[type="date"]`
-- [ ] Rename form, response and request to $form, $response, $request
+- [x] Rename form, response and request to $form, $response, $request
 - [ ] Create a solid build step with minification
 - [ ] Publish to `npm`
 - [ ] Publish to `bower`

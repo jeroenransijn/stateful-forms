@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stateful forms</title>
+  <link rel="stylesheet" href="/assets/kube.css">
+  <link rel="stylesheet" href="/assets/custom.css">
+</head>
+<body>
+  <div class="content">
+    <form novalidate stateful action="/response" method="post" class="form margin-vertical" enctype="application/x-www-form-urlencoded">
+      <fieldset sf-show="!($request.success && $response.json.success)">
+        <div class="form-item">
+          <h3>Response test</h3>
+        </div>
+
+        <div class="form-item">
+          <label for="name">Name <span sf-show="form.submitted && name.invalid" class="req">*</span></label>
+          <input type="text" name="name" id="name" required>
+          <p class="desc" sf-show="$form.submitted && name.invalid" style="display: none;">
+            Please fill in a name
+          </p>
+        </div>
+
+        <label class="form-item checkbox">
+          <input name="is_success" type="checkbox"> Enable to be succesfull
+        </label>
+
+        <p sf-text="$response.json.errorMessage"></p>
+
+        <p sf-show="$request.failed || $request.error" style="display: none;" class="margin-vertical-3">
+          Oops, something went wrong on our servers. Please try again.
+        </p>
+
+        <button type="submit" name="button" sf-text="is_success.value ? 'Submit successful': 'Submit error'">Submit</button>
+      </fieldset>
+
+      <fieldset sf-show="$request.success && $response.json.success">
+        <div class="form-item margin-vertical">
+          <h3>Form successfully submitted</h3>
+        </div>
+      </fieldset>
+    </form>
+
+  </div>
+</body>
+<script src="stateful-forms.js"></script>
+<script type="text/javascript">
+  // Initialize stateful forms on any form[stateful]
+  window.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM loaded');
+    window.createStatefulForms();
+  });
+</script>
+</html>

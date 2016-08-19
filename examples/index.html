@@ -27,7 +27,7 @@
       <h2>Examples</h2>
     </div>
 
-    <form novalidate stateful action="/contact" method="post" class="form margin-vertical">
+    <form novalidate stateful action="/contact" method="post" class="$form margin-vertical">
       <fieldset>
         <div class="form-item">
           <h3>Get in touch</h3>
@@ -73,17 +73,17 @@
         </div>
 
         <div class="form-item">
-          <label for="name">Name <span sf-show="form.submitted && name.invalid" class="req">*</span></label>
+          <label for="name">Name <span sf-show="$form.submitted && name.invalid" class="req">*</span></label>
           <input type="text" name="name" id="name" required>
-          <p class="desc" sf-show="form.submitted && name.invalid" style="display: none;">
+          <p class="desc" sf-show="$form.submitted && name.invalid" style="display: none;">
             Please fill in a name
           </p>
         </div>
 
         <div class="form-item">
-          <label for="email">Email <span sf-show="form.submitted && email.invalid" class="req">*</span></label>
+          <label for="email">Email <span sf-show="$form.submitted && email.invalid" class="req">*</span></label>
           <input type="email" name="email" id="email" required>
-          <p class="desc" sf-show="form.submitted && email.invalid" style="display: none;">
+          <p class="desc" sf-show="$form.submitted && email.invalid" style="display: none;">
             Please enter a valid email
           </p>
         </div>
@@ -96,17 +96,17 @@
           Send <span sf-text="inquiry.value" sf-show="inquiry.value != 'other' && inquiry.value != 'billing'">question</span>
         </button>
 
-        <p sf-show="request.failed" style="display: none;" class="margin-vertical-3">
+        <p sf-show="$request.failed" style="display: none;" class="margin-vertical-3">
           Oops, something went wrong on our servers. Please try again.
         </p>
 
-        <div sf-show="form.success" style="display: none;">
+        <div sf-show="$form.success" style="display: none;">
 
         </div>
       </fieldset>
     </form>
 
-    <form novalidate stateful action="/contact" method="post" class="form margin-vertical">
+    <form novalidate stateful action="/contact" method="post" class="$form margin-vertical">
       <fieldset>
         <div class="form-item">
           <h3>Create account</h3>
@@ -116,28 +116,28 @@
         </div>
 
         <div class="form-item">
-          <label for="create_account_name">Name <span sf-show="form.submitted && name.invalid" class="req">*</span></label>
+          <label for="create_account_name">Name <span sf-show="$form.submitted && name.invalid" class="req">*</span></label>
           <input type="text" name="name" id="create_account_name" required>
-          <p class="desc" sf-show="form.submitted && name.invalid" style="display: none;">
+          <p class="desc" sf-show="$form.submitted && name.invalid" style="display: none;">
             Please fill in a name.
           </p>
         </div>
 
         <div class="form-item">
-          <label for="create_account_email">Email <span sf-show="form.submitted or email.invalid" class="req">*</span></label>
+          <label for="create_account_email">Email <span sf-show="$form.submitted or email.invalid" class="req">*</span></label>
           <input type="email" name="email" id="create_account_email" required>
-          <p class="desc" sf-show="form.submitted && email.invalid" style="display: none;">
+          <p class="desc" sf-show="$form.submitted && email.invalid" style="display: none;">
             Please enter a valid email
           </p>
         </div>
 
         <div class="form-item">
           <label for="create_account_password">Password
-            <span sf-show="form.submitted || email.invalid" class="req">*</span>
+            <span sf-show="$form.submitted || email.invalid" class="req">*</span>
             <span class="desc">Should be at least 6 characters</span>
           </label>
           <input type="password" name="password" id="create_account_password" minlength="6" required>
-          <p class="desc" sf-show="form.submitted && password.invalid" style="display: none;">
+          <p class="desc" sf-show="$form.submitted && password.invalid" style="display: none;">
             Please enter password which is at least 6 characters long
           </p>
         </div>

@@ -25,18 +25,16 @@ Proto.handleFormElementStateChange = function (state, partialState, key) {
 };
 
 Proto.setFormState = function (newState) {
-  this.setState({ form: Object.assign({}, this.state.form, newState) }, 'form');
+  this.setState({ $form: Object.assign({}, this.state.$form, newState) }, '$form');
 };
 
 Proto.computedState = function (state) {
   var isValid = true;
-  var isPristine = state.form.pristine;
-  var isTouched = state.form.touched;
+  var isPristine = state.$form.pristine;
+  var isTouched = state.$form.touched;
 
   Object.keys(state).forEach(function (key) {
-    if (key === 'form') return;
-    if (key === 'request') return;
-    if (key === 'response') return;
+    if (key.indexOf('$') === 0) return;
 
     var prop = state[key];
 
@@ -53,7 +51,7 @@ Proto.computedState = function (state) {
     }
   });
 
-  Object.assign(state.form, {
+  Object.assign(state.$form, {
     valid: isValid,
     pristine: isPristine,
     touched: isTouched,
@@ -111,7 +109,7 @@ Proto.getDefaultState = function () {
   }.bind(this));
 
   return Object.assign({
-    form: {
+    $form: {
       submitted: false,
       pristine: true,
       valid: isValid
@@ -126,20 +124,52 @@ Proto.bindEvents = function () {
   }.bind(this));
 };
 
+function serialize (state) {
+  var result = [];
+
+  Object.keys(state).forEach(function (key) {
+    if (key.indexOf('$') === -1) {
+      result.push(encodeURIComponent(key) + '=' + encodeURIComponent(state[key].value));
+    }
+  });
+
+  return result.join('&');
+}
+
+function serializeJSON (state) {
+  var obj = {};
+
+  Object.keys(state).forEach(function (key) {
+    if (key.indexOf('$') === -1) {
+      obj[key] = state[key].value;
+    }
+  });
+
+  return JSON.stringify(obj);
+}
+
 Proto.submit = function () {
   var action = this.el.getAttribute('action');
-  this.setFormState({ submitted: true });
+  var enctype = this.el.getAttribute('enctype') || 'application/x-www-form-urlencoded; charset=UTF-8';
 
-  if (this.state.form.invalid) return;
+  if (this.state.hasOwnProperty('$response')) {
+    this.setState({ $response: undefined });
+  }
+
+  if (!this.state.$form.submitted) {
+    this.setFormState({ submitted: true });
+  }
+
+  if (this.state.$form.invalid) return;
 
   var request = new XMLHttpRequest();
   request.open('POST', action, true);
-  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  request.setRequestHeader('Content-Type', enctype);
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
 
-      var json = {};
+      var json;
       try {
         json = JSON.parse(request.responseText);
       } catch (e) {
@@ -147,21 +177,23 @@ Proto.submit = function () {
       }
 
       this.setState({
-        request: {
+        $request: {
           success: true,
           failed: false,
+          error: false,
           status: request.status
         },
-        response: {
+        $response: {
           json: json,
           text: request.responseText
         }
       });
     } else {
       this.setState({
-        request: {
+        $request: {
           success: false,
           failed: true,
+          error: false,
           status: request.status
         }
       });
@@ -170,12 +202,23 @@ Proto.submit = function () {
     }
   }.bind(this);
 
-  request.onerror = function() {
-    // There was a connection error of some sort
-    console.log('error');
+  request.onerror = function () {
+    this.setState({
+      $request: {
+        success: false,
+        failed: false,
+        error: true,
+        status: request.status
+      }
+    });
   };
 
-  request.send(this.state);
+  if (enctype === 'application/json') {
+    request.send(serializeJSON(this.state));
+  } else {
+    request.send(serialize(this.state));
+  }
+
 };
 
 // Private
