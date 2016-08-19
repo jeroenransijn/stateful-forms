@@ -227,13 +227,6 @@ ParserImplementation.prototype = {
     }
   },
 
-  // Premature optimizations ;)
-  registerAccessMemberName: function (name) {
-    if (this.accessMemberNames.indexOf(name) === -1) {
-      this.accessMemberNames.push(name);
-    }
-  },
-
   parsePrimary: function () {
     if (this.optional('(')) {
       // TODO
