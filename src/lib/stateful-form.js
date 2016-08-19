@@ -192,6 +192,7 @@ function createStatefulFormElement (field) {
     case 'email':
     case 'phone':
     case 'tel':
+    case 'hidden':
       return new StatefulTextInput(field);
     case 'checkbox': return new StatefulCheckbox(field);
     case 'radio': return new StatefulRadio(field);

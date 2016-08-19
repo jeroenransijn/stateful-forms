@@ -264,6 +264,7 @@ The following list shows all the supported form elements.
 *You can ignore the right hand side of the arrow.*
 
 * `input[type="text"]` => `StatefulTextInput`
+* `input[type="hidden"]` => `StatefulTextInput`
 * `input[type="phone|tel"]` => `StatefulTextInput`, *doesn’t validate*
 * `input[type="email"]` => `StatefulTextInput`, *validates email*
 * `textarea` => `StatefulTextInput`
