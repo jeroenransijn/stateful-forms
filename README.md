@@ -536,6 +536,18 @@ when the form is submitted:
 This project could not be made if it is wasn’t for the excellent work of the AngularJS
 team. Especially on the [angular/expressionist.js](https://github.com/angular/expressionist.js) project which I happen to stumble upon.
 
+## TODO
+
+[ ] Build support for `input[type="radio"]`
+[ ] Reflect classnames to form elements
+[ ] Test out successful responses
+[ ] Create a solid build step with minification
+[ ] Publish to `npm`
+[ ] Publish to `bower`
+[ ] Publish to `cdnjs`
+[ ] Write installation guide
+[ ] Put in ESLint
+
 ## Author & License
 
 Created by **Jeroen Ransijn** under the **MIT** license.
