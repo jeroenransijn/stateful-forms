@@ -564,18 +564,18 @@ team. Especially on the [angular/expressionist.js](https://github.com/angular/ex
 
 ## TODO
 
-[x] Build support for `input[type="radio"]`
-[ ] Reflect classnames to form elements
-[ ] Test out successful responses
-[ ] Build support for `input[type="hidden"]`
-[ ] Figure out what to do with `input[type="date"]`
-[ ] Rename form, response and request to $form, $response, $request
-[ ] Create a solid build step with minification
-[ ] Publish to `npm`
-[ ] Publish to `bower`
-[ ] Publish to `cdnjs`
-[ ] Write installation guide
-[ ] Put in ESLint
+- [x] Build support for `input[type="radio"]`
+- [ ] Reflect classnames to form elements
+- [ ] Test out successful responses
+- [ ] Build support for `input[type="hidden"]`
+- [x] Figure out what to do with `input[type="date"]`
+- [ ] Rename form, response and request to $form, $response, $request
+- [ ] Create a solid build step with minification
+- [ ] Publish to `npm`
+- [ ] Publish to `bower`
+- [ ] Publish to `cdnjs`
+- [ ] Write installation guide
+- [ ] Put in ESLint
 
 ## Author & License
 
