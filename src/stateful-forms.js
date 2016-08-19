@@ -16,7 +16,7 @@ global.createStatefulForms = function createStatefulForms () {
   return Array.prototype.map.call(forms, function (form) {
     var manager = new DirectivesManager(form);
     return new StatefulForm(form).onStateChange(function (state, partialState, key) {
-      console.log('form:stateChange', key, state);
+      // console.log('form:stateChange', key, state);
       if (key) {
         manager.patch(key, state);
       } else {

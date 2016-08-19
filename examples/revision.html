@@ -96,6 +96,10 @@
           Send <span sf-text="inquiry.value" sf-show="inquiry.value != 'other' && inquiry.value != 'billing'">question</span>
         </button>
 
+        <p sf-show="request.failed" style="display: none;" class="margin-vertical-3">
+          Oops, something went wrong on our servers. Please try again.
+        </p>
+
         <div sf-show="form.success" style="display: none;">
 
         </div>
@@ -142,7 +146,7 @@
           <input name="terms_and_conditions" type="checkbox" required> I agree to the terms and conditions
         </label>
 
-        <p sf-show="email.valid" style="display: none;">
+        <p sf-show="email.valid" style="display: none;" class="form-item">
           We will send a confirmation email to <strong sf-text="email.value"></strong>.
         </p>
 

@@ -22,16 +22,11 @@ Proto.queryMap = function (cls) {
       this.directives[attr] = this.directives[attr] || [];
       this.directives[attr].push(directive);
 
-      console.log('directive', directive);
-      console.log('directive.getNames()', directive.getNames());
-
       directive.getNames().forEach(function (name) {
         this.patchIndex[name] = this.patchIndex[name] || [];
         this.patchIndex[name].push(directive);
       }.bind(this));
     }.bind(this));
-
-    console.log(this.patchIndex);
 };
 
 Proto.patch = function (key, state) {

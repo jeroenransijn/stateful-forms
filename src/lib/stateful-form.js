@@ -26,18 +26,37 @@ Proto.setFormState = function (newState) {
 };
 
 Proto.computedState = function (state) {
-  for (var prop in state) {
-    if (state.hasOwnProperty(prop) && prop !== 'form') {
-      state.form.pristine = state[prop].pristine && state.form.pristine;
-      state.form.valid = state[prop].valid && state.form.valid;
-      state.form.touched = state[prop].touched && state.form.touched;
+  var isValid = true;
+  var isPristine = state.form.pristine;
+  var isTouched = state.form.touched;
+
+  Object.keys(state).forEach(function (key) {
+    if (key === 'form') return;
+    if (key === 'request') return;
+    if (key === 'response') return;
+
+    var prop = state[key];
+
+    if (isValid && prop.hasOwnProperty('valid')) {
+      isValid = prop.valid;
     }
-  }
+
+    if (isPristine && prop.hasOwnProperty('pristine')) {
+      isPristine = prop.pristine;
+    }
+
+    if (prop.hasOwnProperty('touched')) {
+      isTouched = isTouched || prop.touched;
+    }
+  });
 
   Object.assign(state.form, {
-    invalid: !state.form.valid,
-    dirty: !state.form.pristine,
-    untouched: !state.form.touched
+    valid: isValid,
+    pristine: isPristine,
+    touched: isTouched,
+    invalid: !isValid,
+    dirty: !isPristine,
+    untouched: !isTouched
   });
 
   return state;
@@ -93,8 +112,49 @@ Proto.bindEvents = function () {
 Proto.submit = function () {
   var action = this.el.getAttribute('action');
   this.setFormState({ submitted: true });
-  doRequest(action, this.serialize());
+
+
+  console.log(this.state);
+  if (this.state.form.invalid) return;
+
+  var request = new XMLHttpRequest();
+  request.open('POST', action, true);
+  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+  request.onload = function () {
+    if (request.status >= 200 && request.status < 400) {
+      this.setState({
+        request: {
+          success: true,
+          failed: false,
+          status: request.status
+        },
+        response: {
+          json: JSON.parse(request.responseText),
+          text: request.responseText
+        }
+      });
+    } else {
+      this.setState({
+        request: {
+          success: false,
+          failed: true,
+          status: request.status
+        }
+      });
+      // We reached our target server, but it returned an error
+      console.log('error');
+    }
+  }.bind(this);
+
+  request.onerror = function() {
+    // There was a connection error of some sort
+    console.log('error');
+  };
+
+  request.send(this.state);
 };
+
 
 // Private
 
@@ -109,13 +169,6 @@ function createStatefulFormElement (field) {
         return new StatefulSelect(field);
       }
   }
-}
-
-function doRequest (action, data) {
-  var request = new XMLHttpRequest();
-  request.open('POST', action, true);
-  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  request.send(data);
 }
 
 module.exports = StatefulForm;
