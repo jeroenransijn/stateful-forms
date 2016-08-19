@@ -123,6 +123,14 @@ Proto.submit = function () {
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
+
+      var json = {};
+      try {
+        json = JSON.parse(request.responseText);
+      } catch (e) {
+        json = {};
+      }
+
       this.setState({
         request: {
           success: true,
@@ -130,7 +138,7 @@ Proto.submit = function () {
           status: request.status
         },
         response: {
-          json: JSON.parse(request.responseText),
+          json: json,
           text: request.responseText
         }
       });
