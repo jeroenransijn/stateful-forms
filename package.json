@@ -15,6 +15,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
+    "git:merge-down-dev": "git push origin dev && git checkout master && git merge dev && git push origin master",
     "dev": "concurrently \"npm run watch\" \"npm run examples\" ",
     "watch": "gulp watch",
     "examples": "node serve-examples.js",
