@@ -11,7 +11,6 @@ Proto.bindEvents = function () {
 };
 
 Proto.updateValue = function () {
-  console.log('checkbox', this.getValue());
   this.setState({ value: this.getValue(), pristine: false, touched: true });
 };
 

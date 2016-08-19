@@ -50,16 +50,16 @@
 
 				<div class="form-item">
 					<label for="message">Message
-						<span sf-show="inquiry.value == question" class="desc">
+						<span sf-show="inquiry.value == 'question'" class="desc">
 							Ask us any question.
 						</span>
-						<span sf-show="inquiry.value == feedback" class="desc" style="display: none;">
+						<span sf-show="inquiry.value == 'feedback'" class="desc" style="display: none;">
 							We are always open for feedback.
 						</span>
-						<span sf-show="inquiry.value == billing" class="desc" style="display: none;">
+						<span sf-show="inquiry.value == 'billing'" class="desc" style="display: none;">
 							Let’s figure out this billing inquiry together.
 						</span>
-						<span sf-show="inquiry.value == other" class="desc" style="display: none;">
+						<span sf-show="inquiry.value == 'other'" class="desc" style="display: none;">
 							Tell us what’s on your mind.
 						</span>
 					</label>

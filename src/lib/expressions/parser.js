@@ -33,14 +33,29 @@ Parser.prototype = {
    */
   parseObject: function (input) {
     var obj = {};
+    var accessScopeNames = [];
 
     // TODO: there are edges cases here when using split
     input.split(';').forEach(function (exp) {
       var keySeparatorIndex = exp.indexOf(':');
-      obj[exp.substring(0, keySeparatorIndex)] = parse(exp.substring(keySeparatorIndex + 1).trim());
+      var expression = this.parse(exp.substring(keySeparatorIndex + 1).trim());
+      accessScopeNames = accessScopeNames.concat(expression.accessScopeNames);
+      obj[exp.substring(0, keySeparatorIndex)] = expression;
     }.bind(this));
 
-    return obj;
+    return {
+      input: input,
+      accessScopeNames: accessScopeNames,
+      eval: function (scope) {
+        var returnObj = {};
+
+        Object.keys(obj).forEach(function (key) {
+          returnObj[key] = obj[key].eval(scope);
+        });
+
+        return returnObj;
+      }
+    };
   }
 }
 
@@ -53,6 +68,7 @@ var EOF = new Lexer.Token(-1, null);
 function ParserImplementation(lexer, input) {
   this.index = 0;
   this.input = input;
+  this.accessScopeNames = [];
   this.tokens = lexer.lex(input);
 }
 
@@ -63,7 +79,11 @@ ParserImplementation.prototype = {
   },
 
   parse: function () {
-    return this.parseExpression();
+    var expression = this.parseExpression();
+    // expose useful information
+    expression.input = this.input;
+    expression.accessScopeNames = this.accessScopeNames;
+    return expression;
   },
 
   parseExpression: function ()  {
@@ -207,6 +227,13 @@ ParserImplementation.prototype = {
     }
   },
 
+  // Premature optimizations ;)
+  registerAccessMemberName: function (name) {
+    if (this.accessMemberNames.indexOf(name) === -1) {
+      this.accessMemberNames.push(name);
+    }
+  },
+
   parsePrimary: function () {
     if (this.optional('(')) {
       // TODO
@@ -236,6 +263,10 @@ ParserImplementation.prototype = {
     var name = this.peek().key;
 
     this.advance();
+
+    if (this.accessScopeNames.indexOf(name) === -1) {
+      this.accessScopeNames.push(name);
+    }
 
     return new AccessScope(name);
   },
